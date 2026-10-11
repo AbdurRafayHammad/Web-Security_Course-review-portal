@@ -7,8 +7,8 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 const db = new sqlite3.Database(path.join(__dirname, 'database.db'));
-
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // VULNERABLE: no sameSite/secure cookie flags -> CSRF possible

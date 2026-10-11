@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Course</title></head>
+<body>
+  <h1>Course: <%= course %></h1>
+  <h3>Reviews</h3>
+  <ul>
+    <% reviews.forEach(r => { %>
+      <!-- FIX: <%= %> escapes the comment -> Stored XSS payload shows as plain text -->
+      <li><b><%= r.author %>:</b> <%= r.comment %></li>
+    <% }) %>
+  </ul>
+
+  <form method="POST" action="/course/<%= course %>/review">
+    <textarea name="comment" placeholder="Write a review"></textarea><br>
+    <button>Submit Review</button>
+  </form>
+</body>
+</html>

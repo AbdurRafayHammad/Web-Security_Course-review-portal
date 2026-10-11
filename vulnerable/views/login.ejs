@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Login - Vulnerable</title></head>
+<body>
+  <h1>Course Review Portal (VULNERABLE VERSION)</h1>
+  <% if (error) { %><p style="color:red"><%= error %></p><% } %>
+  <form method="POST" action="/login">
+    <input name="username" placeholder="username"><br><br>
+    <input name="password" type="password" placeholder="password"><br><br>
+    <button type="submit">Login</button>
+  </form>
+  <p style="color:gray">Demo payload: username = <code>admin' OR '1'='1' --</code>, password = anything</p>
+</body>
+</html>

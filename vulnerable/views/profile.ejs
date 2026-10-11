@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Profile</title></head>
+<body>
+  <h1>Profile: <%= username %></h1>
+
+  <div id="bio"></div>
+  <script>
+    // VULNERABLE: untrusted location.hash written via innerHTML -> DOM-based XSS
+    document.getElementById('bio').innerHTML = decodeURIComponent(location.hash.slice(1));
+  </script>
+  <p style="color:gray">DOM XSS demo: visit
+    <code>/profile#&lt;img src=x onerror=alert('dom')&gt;</code>
+  </p>
+
+  <h3>Update Email (no CSRF protection)</h3>
+  <form method="POST" action="/update-email">
+    <input name="email" placeholder="new email">
+    <button>Update</button>
+  </form>
+</body>
+</html>

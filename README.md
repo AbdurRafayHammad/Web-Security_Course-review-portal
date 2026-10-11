@@ -44,17 +44,6 @@ Both can run at the same time (different ports, different DB files).
 | admin | admin123 |
 | alice | password1 |
 
-## Vulnerabilities implemented (vulnerable/) and how they're fixed (safe/)
-
-| Vulnerability | Where (vulnerable) | Payload example | Fix (safe) |
-| Reflected XSS | `/search?q=` | `<script>alert('reflected')</script>` | EJS `<%= %>` auto-escaping |
-| Stored XSS | Review comment on `/course/:name` | `<script>alert('stored')</script>` | EJS `<%= %>` auto-escaping on output |
-| DOM-based XSS | `/profile#...` via `innerHTML` | `<img src=x onerror=alert('dom')>` | `textContent` instead of `innerHTML` |
-| CSRF | `/update-email` (no token, no SameSite) | `csrf-attack.html` auto-submits a form | `csurf` token + `SameSite=strict` cookie |
-| SQL Injection — Easy | `/login` (string concat) | `admin' OR '1'='1' --` | Parameterized query (`?` placeholders) |
-| SQL Injection — Intermediate | `/check-user?username=` (blind boolean) | `admin' AND '1'='1` vs `admin' AND '1'='2` | Parameterized query |
-| SQL Injection — Advanced | `/search?q=` (UNION-based) | `' UNION SELECT username, password FROM users--` | Parameterized query |
-
 ## How to test each vulnerability
 
 1. **Reflected XSS** — visit `http://localhost:3000/search?q=<script>alert('reflected')</script>` → popup fires. Same URL on port 3001 → shows as plain text, no popup.
@@ -65,18 +54,4 @@ Both can run at the same time (different ports, different DB files).
 6. **SQL Injection (intermediate)** — `/check-user?username=admin' AND '1'='1` returns "exists"; `...AND '1'='2` returns "not found" — used to infer data blindly. Both return "not found" on the safe version.
 7. **SQL Injection (advanced)** — on `/search?q=`, chain payloads: `x' ORDER BY 1--` (find column count) → `x' UNION SELECT name,name FROM sqlite_master WHERE type='table'--` (list tables) → `x' UNION SELECT sql,sql FROM sqlite_master WHERE name='users'--` (list columns) → `x' UNION SELECT username,password FROM users--` (dump credentials). All fail on the safe version.
 
-## Notes for the viva
-- Passwords are stored in plaintext in both versions for demo clarity; in a real
-  production app they should be hashed with bcrypt — mention this limitation if asked.
-- The vulnerable app logs every raw SQL query to the console (`[SQL QUERY]`) so you
-  can show the examiner exactly what gets executed, including the injected payload.
-- Normal login with seeded credentials (e.g. `admin` / `admin123`) is NOT the SQL
-  injection demo — that's just regular authentication. The actual vulnerability is
-  demonstrated by logging in **without** knowing the real password, using a payload
-  like `admin' OR '1'='1' --`.
 
-
-powershell
-git add README.md
-git commit -m "Update README with testing steps and credentials"
-git push

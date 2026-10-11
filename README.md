@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Course Review Portal — Web Security Demo (Part 2)
 
 ## Use case
@@ -58,3 +59,6 @@ Both can run at the same time (different ports, different DB files).
   production app they should be hashed with bcrypt — mention this limitation if asked.
 - The vulnerable app logs every raw SQL query to the console (`[SQL QUERY]`) so you
   can show the examiner exactly what gets executed.
+=======
+# Web-Security_Course-review-portal
+>>>>>>> bada4d9c0b1c96fc38343a9112d534a1818ef835

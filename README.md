@@ -42,7 +42,6 @@ Both can run at the same time (different ports, different DB files).
 | Username | Password |
 |---|---|
 | admin | admin123 |
-| alice | password1 |
 
 ## How to test each vulnerability
 
